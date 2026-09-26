@@ -78,5 +78,6 @@
   "error.generic": "حدث خطأ ما. حاول مرة أخرى.",
   "error.retry": "إعادة المحاولة",
   "notes.saved": "تم الحفظ على جهازك",
-  "notes.emptyHint": "لم تكتب شيئًا بعد — ابدأ الكتابة"
+  "notes.emptyHint": "لم تكتب شيئًا بعد — ابدأ الكتابة",
+  "search.alsoKnownAs": "يُعرف أيضًا باسم"
 }

@@ -11,7 +11,7 @@ const SCRIPTURE_COLOR: Record<string, string> = {
   torah: 'var(--maar-torah)',
 };
 
-export function VerseCard({ passage }: { passage: Passage }) {
+export function VerseCard({ passage, verseLabel }: { passage: Passage; verseLabel?: string | number }) {
   const { t } = useTranslation();
   const [saved, setSaved] = useState(() => isBookmarked(passage.scripture, passage.reference));
   const [copied, setCopied] = useState(false);
@@ -31,8 +31,6 @@ export function VerseCard({ passage }: { passage: Passage }) {
     setSaved(nowSaved);
   }
 
-  // Auto-saves on every keystroke, straight to this device's storage —
-  // same behavior as MAAR.Quran's reflection notes. No save button.
   function onNoteInput(value: string) {
     setNoteText(value);
     setNote({
@@ -65,64 +63,73 @@ export function VerseCard({ passage }: { passage: Passage }) {
   const color = SCRIPTURE_COLOR[passage.scripture];
 
   return (
-    <div className="maar-card p-4 sm:p-5" style={{ borderInlineStartWidth: 4, borderInlineStartColor: color }}>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium tracking-wide" style={{ color }}>{passage.reference}</span>
-        <span className="text-[11px] text-[var(--maar-muted)]">{passage.translation}</span>
-      </div>
+    <div className="group py-5 border-t first:border-t-0" style={{ borderColor: 'var(--maar-line-soft)' }}>
+      <div className="flex items-start gap-4">
+        <span
+          className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium"
+          style={{ border: `1px solid ${color}`, color }}
+        >
+          {verseLabel ?? passage.verseStart}
+        </span>
 
-      {passage.originalText && (
-        <p dir="auto" className="font-scripture-ar text-xl sm:text-2xl leading-loose mb-3 text-end">
-          {passage.originalText}
-        </p>
-      )}
-      <p className="text-[15px] sm:text-base leading-relaxed">{passage.text}</p>
-
-      <div className="mt-3 flex flex-wrap items-center gap-1 text-[var(--maar-muted)]">
-        {passage.audioUrl ? (
-          <button onClick={toggleAudio} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
-            {playing ? <Pause size={13} /> : <Play size={13} />} {playing ? t('reader.pause') : t('reader.playAudio')}
-          </button>
-        ) : null}
-        <button onClick={toggleSave} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
-          {saved ? <BookmarkCheck size={13} /> : <Bookmark size={13} />} {saved ? t('reader.bookmarked') : t('reader.bookmark')}
-        </button>
-        <button onClick={() => setNoteOpen((v) => !v)} className={`maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)] ${noteText.trim() ? 'font-medium' : ''}`}>
-          <NotebookPen size={13} /> {t('reader.addNote')}
-        </button>
-        <button onClick={copyText} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
-          {copied ? <Check size={13} /> : <Copy size={13} />} {copied ? t('reader.copied') : t('reader.copy')}
-        </button>
-        <button onClick={() => setShowSource((v) => !v)} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
-          <Info size={13} /> {t('reader.source')}
-        </button>
-      </div>
-
-      {showSource && (
-        <p className="mt-2 text-[11px] text-[var(--maar-muted)] border-t pt-2" style={{ borderColor: 'var(--maar-line)' }}>
-          {t('reader.source')}: {passage.source}{passage.license ? ` — ${passage.license}` : ''}
-        </p>
-      )}
-
-      {noteOpen && (
-        <div className="mt-3 border-t pt-3" style={{ borderColor: 'var(--maar-line)' }}>
-          <label className="text-xs text-[var(--maar-muted)] mb-1 block">{t('notes.title')}</label>
-          <textarea
-            value={noteText}
-            onChange={(e) => onNoteInput(e.target.value)}
-            placeholder={t('notes.placeholder') ?? ''}
-            rows={3}
-            autoFocus
-            className="maar-card maar-focus w-full rounded-lg p-2 text-sm"
-          />
-          <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="flex items-center gap-1 text-[11px] text-[var(--maar-muted)]">
-              <Save size={11} /> {noteText.trim() ? t('notes.saved') : t('notes.emptyHint')}
-            </p>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="text-xs font-medium" style={{ color }}>{passage.reference}</span>
+            <span className="text-[11px] text-[var(--maar-muted)]">{passage.translation}</span>
           </div>
-          <p className="mt-1 text-[11px] text-[var(--maar-muted)]">{t('notes.privacy')}</p>
+
+          {passage.originalText && (
+            <p dir="auto" className="font-scripture-ar text-xl sm:text-2xl leading-loose mt-3 mb-2 text-end">
+              {passage.originalText}
+            </p>
+          )}
+          <p className="text-[15px] sm:text-base leading-relaxed mt-1">{passage.text}</p>
+
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-[var(--maar-muted)] opacity-80 group-hover:opacity-100 transition-opacity">
+            {passage.audioUrl ? (
+              <button onClick={toggleAudio} className="maar-focus flex items-center gap-1 text-xs hover:text-[var(--maar-ink)]">
+                {playing ? <Pause size={13} /> : <Play size={13} />} {playing ? t('reader.pause') : t('reader.playAudio')}
+              </button>
+            ) : null}
+            <button onClick={toggleSave} className="maar-focus flex items-center gap-1 text-xs hover:text-[var(--maar-ink)]">
+              {saved ? <BookmarkCheck size={13} style={{ color: 'var(--maar-gold)' }} /> : <Bookmark size={13} />} {saved ? t('reader.bookmarked') : t('reader.bookmark')}
+            </button>
+            <button onClick={() => setNoteOpen((v) => !v)} className="maar-focus flex items-center gap-1 text-xs hover:text-[var(--maar-ink)]">
+              <NotebookPen size={13} style={noteText.trim() ? { color: 'var(--maar-gold)' } : undefined} /> {t('reader.addNote')}
+            </button>
+            <button onClick={copyText} className="maar-focus flex items-center gap-1 text-xs hover:text-[var(--maar-ink)]">
+              {copied ? <Check size={13} /> : <Copy size={13} />} {copied ? t('reader.copied') : t('reader.copy')}
+            </button>
+            <button onClick={() => setShowSource((v) => !v)} className="maar-focus flex items-center gap-1 text-xs hover:text-[var(--maar-ink)]">
+              <Info size={13} /> {t('reader.source')}
+            </button>
+          </div>
+
+          {showSource && (
+            <p className="mt-2 text-[11px] text-[var(--maar-muted)]">
+              {passage.source}{passage.license ? ` — ${passage.license}` : ''}
+            </p>
+          )}
+
+          {noteOpen && (
+            <div className="mt-3 rounded-[var(--maar-radius-sm)] border p-3" style={{ borderColor: 'var(--maar-line)' }}>
+              <textarea
+                value={noteText}
+                onChange={(e) => onNoteInput(e.target.value)}
+                placeholder={t('notes.placeholder') ?? ''}
+                rows={3}
+                autoFocus
+                className="maar-focus w-full bg-transparent text-sm outline-none resize-none"
+              />
+              <div className="mt-2 flex items-center justify-between gap-2 pt-2 border-t" style={{ borderColor: 'var(--maar-line-soft)' }}>
+                <p className="flex items-center gap-1 text-[11px] text-[var(--maar-muted)]">
+                  <Save size={11} /> {noteText.trim() ? t('notes.saved') : t('notes.emptyHint')}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

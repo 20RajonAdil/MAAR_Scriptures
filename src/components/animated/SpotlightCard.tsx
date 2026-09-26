@@ -25,7 +25,7 @@ export function SpotlightCard({
           y: ((e.clientY - rect.top) / rect.height) * 100,
         });
       }}
-      className={`maar-card relative overflow-hidden p-6 transition-transform duration-300 hover:-translate-y-0.5 ${className}`}
+      className={`maar-surface relative overflow-hidden p-6 transition-transform duration-300 hover:-translate-y-0.5 ${className}`}
       style={{
         backgroundImage: `radial-gradient(400px circle at ${pos.x}% ${pos.y}%, rgba(${accent}, 0.10), transparent 60%)`,
       }}

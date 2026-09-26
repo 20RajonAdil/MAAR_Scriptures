@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FadeIn } from '../components/animated/FadeIn';
 import { SpotlightCard } from '../components/animated/SpotlightCard';
-import { AnimatedGradientText } from '../components/animated/AnimatedGradientText';
 import { BookOpen, Search, Scale, NotebookPen } from 'lucide-react';
 
 const scriptures = [
@@ -11,32 +10,38 @@ const scriptures = [
   { to: '/torah', key: 'nav.torah', color: 'var(--maar-torah)', accent: '42,92,168' },
 ];
 
+const pillars = [
+  { icon: BookOpen, key: 'home.pillar.read' },
+  { icon: Search, key: 'home.pillar.search' },
+  { icon: Scale, key: 'home.pillar.compare' },
+  { icon: NotebookPen, key: 'home.pillar.notes' },
+];
+
 export default function Home() {
   const { t } = useTranslation();
   return (
-    <div className="space-y-14">
-      <FadeIn className="text-center max-w-2xl mx-auto pt-6">
-        <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">
-          <AnimatedGradientText>{t('app.tagline')}</AnimatedGradientText>
-        </h1>
-        <p className="mt-4 text-[var(--maar-muted)] text-base sm:text-lg">{t('home.intro')}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
+    <div className="space-y-16">
+      <FadeIn className="text-center max-w-xl mx-auto pt-8">
+        <p className="font-scripture-ar maar-gold-shimmer text-lg mb-3">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+        <h1 className="font-display text-4xl sm:text-5xl leading-tight">{t('app.tagline')}</h1>
+        <p className="mt-4 text-[var(--maar-muted)] text-base sm:text-lg leading-relaxed">{t('home.intro')}</p>
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link to="/quran" className="maar-focus rounded-full px-5 py-2.5 text-sm font-medium text-white" style={{ background: 'var(--maar-ink)' }}>
             {t('home.cta.read')}
           </Link>
-          <Link to="/search" className="maar-focus rounded-full px-5 py-2.5 text-sm font-medium maar-card">
+          <Link to="/search" className="maar-focus rounded-full px-5 py-2.5 text-sm font-medium border" style={{ borderColor: 'var(--maar-line)' }}>
             {t('home.cta.search')}
           </Link>
         </div>
       </FadeIn>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {scriptures.map((s, i) => (
           <FadeIn key={s.to} delay={i * 0.08}>
             <Link to={s.to}>
               <SpotlightCard accent={s.accent} className="h-full">
-                <BookOpen style={{ color: s.color }} className="mb-3" />
-                <h3 className="font-semibold text-lg">{t(s.key)}</h3>
+                <BookOpen style={{ color: s.color }} className="mb-3" size={22} />
+                <h3 className="font-display text-xl">{t(s.key)}</h3>
               </SpotlightCard>
             </Link>
           </FadeIn>
@@ -44,23 +49,24 @@ export default function Home() {
       </div>
 
       <FadeIn>
-        <div className="grid gap-4 sm:grid-cols-4 text-center">
-          {[
-            { icon: BookOpen, key: 'home.pillar.read' },
-            { icon: Search, key: 'home.pillar.search' },
-            { icon: Scale, key: 'home.pillar.compare' },
-            { icon: NotebookPen, key: 'home.pillar.notes' },
-          ].map(({ icon: Icon, key }) => (
-            <div key={key} className="maar-card p-5">
-              <Icon className="mx-auto mb-2" style={{ color: 'var(--maar-gold)' }} />
-              <p className="text-sm font-medium">{t(key)}</p>
+        <div className="flex flex-col sm:flex-row rounded-[var(--maar-radius)] border overflow-hidden" style={{ borderColor: 'var(--maar-line)' }}>
+          {pillars.map(({ icon: Icon, key }) => (
+            <div
+              key={key}
+              className="flex-1 flex items-center gap-3 px-5 py-4 border-t sm:border-t-0 sm:border-s first:border-t-0 first:sm:border-s-0"
+              style={{ borderColor: 'var(--maar-line)' }}
+            >
+              <Icon size={18} style={{ color: 'var(--maar-gold)' }} className="shrink-0" />
+              <span className="text-sm font-medium">{t(key)}</span>
             </div>
           ))}
         </div>
       </FadeIn>
 
-      <FadeIn className="maar-card p-5 text-center text-sm text-[var(--maar-muted)] max-w-2xl mx-auto">
-        {t('home.disclaimer')}
+      <FadeIn className="max-w-xl mx-auto text-center">
+        <p className="text-sm text-[var(--maar-muted)] leading-relaxed border-t pt-5" style={{ borderColor: 'var(--maar-line)' }}>
+          {t('home.disclaimer')}
+        </p>
       </FadeIn>
     </div>
   );

@@ -78,5 +78,6 @@
   "error.generic": "Something went wrong. Please try again.",
   "error.retry": "Retry",
   "notes.saved": "Saved to your device",
-  "notes.emptyHint": "Nothing written yet — start typing"
+  "notes.emptyHint": "Nothing written yet — start typing",
+  "search.alsoKnownAs": "Also known as"
 }

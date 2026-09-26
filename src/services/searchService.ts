@@ -3,6 +3,7 @@ import { searchQuran } from './quranService';
 import { fetchChapter as fetchBibleChapter, searchBible } from './bibleService';
 import { fetchChapter as fetchTorahChapter, searchTorah } from './torahService';
 import { BIBLE_TOPIC_REFS, TORAH_TOPIC_REFS } from './topicMap';
+import { findTermMatch } from './terminology';
 
 async function bibleTopicSearch(query: string): Promise<Passage[]> {
   const key = query.trim().toLowerCase();
@@ -33,10 +34,20 @@ async function torahTopicSearch(query: string): Promise<Passage[]> {
 }
 
 export async function searchAllScriptures(query: string): Promise<SearchResultGroup[]> {
+  // If the query matches a known cross-tradition name or term (e.g. "God"
+  // matches "Allah", "Jesus" matches "Isa"), search each scripture using
+  // the term it actually uses, instead of the literal typed word — a
+  // literal search for "God" in the Qur'an API would miss every ayah that
+  // says "Allah", even though they're asking about the same thing.
+  const match = findTermMatch(query);
+  const quranQuery = match?.quranQuery ?? query;
+  const bibleQuery = match?.bibleQuery ?? query;
+  const torahQuery = match?.torahQuery ?? query;
+
   const [quran, bible, torah] = await Promise.allSettled([
-    searchQuran(query),
-    bibleTopicSearch(query),
-    torahTopicSearch(query),
+    searchQuran(quranQuery),
+    bibleTopicSearch(bibleQuery),
+    torahTopicSearch(torahQuery),
   ]);
 
   const toGroup = (

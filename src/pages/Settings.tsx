@@ -25,7 +25,7 @@ export default function Settings() {
     <div className="max-w-xl space-y-8">
       <h1 className="text-2xl font-semibold">{t('settings.title')}</h1>
 
-      <section className="maar-card p-5 space-y-3">
+      <section className="maar-surface p-5 space-y-3">
         <h2 className="font-medium">{t('settings.language')}</h2>
         <div className="flex flex-wrap gap-2">
           {LANGUAGES.map((l) => (
@@ -41,7 +41,7 @@ export default function Settings() {
         </div>
       </section>
 
-      <section className="maar-card p-5 space-y-3">
+      <section className="maar-surface p-5 space-y-3">
         <h2 className="font-medium">{t('settings.theme')}</h2>
         <div className="flex gap-2">
           {(['light', 'dark', 'system'] as const).map((m) => (
@@ -57,7 +57,7 @@ export default function Settings() {
         </div>
       </section>
 
-      <section className="maar-card p-5 space-y-3">
+      <section className="maar-surface p-5 space-y-3">
         <h2 className="font-medium">{t('settings.textSize')}</h2>
         <input
           type="range" min={85} max={130} step={5} value={textSize}
@@ -66,12 +66,12 @@ export default function Settings() {
         />
       </section>
 
-      <section className="maar-card p-5 space-y-2 text-sm text-[var(--maar-muted)]">
+      <section className="maar-surface p-5 space-y-2 text-sm text-[var(--maar-muted)]">
         <h2 className="font-medium text-[var(--maar-ink)]">{t('settings.offline')}</h2>
         <p>{t('settings.offline.info')}</p>
       </section>
 
-      <section className="maar-card p-5 space-y-3">
+      <section className="maar-surface p-5 space-y-3">
         <p className="text-sm text-[var(--maar-muted)]">{t('settings.dataStored')}</p>
         {!confirming ? (
           <button onClick={() => setConfirming(true)} className="maar-focus rounded-full px-4 py-2 text-sm border border-red-300 text-red-600">
@@ -82,7 +82,7 @@ export default function Settings() {
             <p className="text-sm">{t('settings.clearData.confirm')}</p>
             <div className="flex gap-2">
               <button onClick={clearData} className="maar-focus rounded-full px-4 py-1.5 text-sm text-white bg-red-600">{t('settings.clearData')}</button>
-              <button onClick={() => setConfirming(false)} className="maar-focus rounded-full px-4 py-1.5 text-sm maar-card">{t('onboarding.skip')}</button>
+              <button onClick={() => setConfirming(false)} className="maar-focus rounded-full px-4 py-1.5 text-sm maar-surface">{t('onboarding.skip')}</button>
             </div>
           </div>
         )}

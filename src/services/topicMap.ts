@@ -6,6 +6,7 @@
 // in this file as more topics are verified. Quran search does NOT use this
 // map; it queries the live Al Quran Cloud search API directly.
 export const BIBLE_TOPIC_REFS: Record<string, string[]> = {
+  god: ['Genesis 1:1', 'John 1:1'],
   pork: ['Leviticus 11:7'],
   food: ['Genesis 1:29'],
   alcohol: ['Proverbs 20:1', 'Ephesians 5:18'],
@@ -22,9 +23,14 @@ export const BIBLE_TOPIC_REFS: Record<string, string[]> = {
   afterlife: ['John 14:2'],
   justice: ['Micah 6:8'],
   family: ['Ephesians 6:1'],
+  halal: ['Acts 10:15', '1 Timothy 4:4'],
+  lawful: ['Acts 10:15', '1 Timothy 4:4'],
+  haram: ['Leviticus 11:7', 'Acts 15:29'],
+  forbidden: ['Leviticus 11:7', 'Acts 15:29'],
 };
 
 export const TORAH_TOPIC_REFS: Record<string, string[]> = {
+  god: ['Genesis 1.1'],
   food: ['Genesis 1.29'],
   pork: ['Leviticus 11.7'],
   marriage: ['Genesis 2.24'],
@@ -34,4 +40,6 @@ export const TORAH_TOPIC_REFS: Record<string, string[]> = {
   abraham: ['Genesis 12.1'],
   justice: ['Deuteronomy 16.20'],
   family: ['Exodus 20.12'],
+  haram: ['Leviticus 11.7'],
+  forbidden: ['Leviticus 11.7'],
 };

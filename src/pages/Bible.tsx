@@ -25,36 +25,37 @@ export default function Bible() {
 
   if (book) {
     return (
-      <div className="space-y-4">
-        <button onClick={() => setBook(null)} className="maar-focus flex items-center gap-1 text-sm text-[var(--maar-muted)]">
+      <div className="max-w-2xl mx-auto">
+        <button onClick={() => setBook(null)} className="maar-focus flex items-center gap-1 text-sm text-[var(--maar-muted)] mb-4">
           <ChevronLeft size={16} /> {t('nav.bible')}
         </button>
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-semibold">{book} {chapter}</h2>
-          <div className="flex gap-1">
-            <button disabled={chapter <= 1} onClick={() => setChapter((c) => c - 1)} className="maar-card maar-focus px-2 py-1 text-sm disabled:opacity-40">‹</button>
-            <button onClick={() => setChapter((c) => c + 1)} className="maar-card maar-focus px-2 py-1 text-sm">›</button>
+          <h2 className="font-display text-3xl">{book} {chapter}</h2>
+          <div className="flex gap-1 ms-auto">
+            <button disabled={chapter <= 1} onClick={() => setChapter((c) => c - 1)} className="maar-focus maar-surface px-2.5 py-1 text-sm disabled:opacity-40">‹</button>
+            <button onClick={() => setChapter((c) => c + 1)} className="maar-focus maar-surface px-2.5 py-1 text-sm">›</button>
           </div>
         </div>
-        {loading && <p className="flex items-center gap-2 text-sm text-[var(--maar-muted)]"><Loader2 className="animate-spin" size={16} /> {t('search.loading')}</p>}
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <div className="space-y-3">{verses.map((v) => <VerseCard key={v.reference} passage={v} />)}</div>
+        {loading && <p className="flex items-center gap-2 text-sm text-[var(--maar-muted)] mt-6"><Loader2 className="animate-spin" size={16} /> {t('search.loading')}</p>}
+        {error && <p className="text-sm text-red-600 mt-6">{error}</p>}
+        <div>{verses.map((v) => <VerseCard key={v.reference} passage={v} />)}</div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">{t('nav.bible')}</h1>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {BIBLE_BOOKS.map((b) => (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="font-display text-3xl">{t('nav.bible')}</h1>
+      <div>
+        {BIBLE_BOOKS.map((b, i) => (
           <button
             key={b}
             onClick={() => { setBook(b); setChapter(1); }}
-            className="maar-card maar-focus text-start p-3 hover:-translate-y-0.5 transition-transform"
-            style={{ borderInlineStartWidth: 3, borderInlineStartColor: 'var(--maar-bible)' }}
+            className="maar-focus w-full text-start py-3 border-t first:border-t-0 flex items-center gap-4 hover:bg-[var(--maar-line-soft)] transition-colors -mx-2 px-2 rounded-[var(--maar-radius-sm)]"
+            style={{ borderColor: 'var(--maar-line-soft)' }}
           >
-            {b}
+            <span className="w-6 shrink-0 text-right text-xs text-[var(--maar-muted)] tabular-nums">{i + 1}</span>
+            <span className="font-medium" style={{ color: 'var(--maar-bible)' }}>{b}</span>
           </button>
         ))}
       </div>

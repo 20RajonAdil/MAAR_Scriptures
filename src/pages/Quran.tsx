@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { fetchSurahList, fetchSurah } from '../services/quranService';
 import type { Surah, Passage } from '../types/scripture';
 import { VerseCard } from '../components/reader/VerseCard';
-import { FadeIn } from '../components/animated/FadeIn';
+import { BismillahBlock } from '../components/reader/BismillahBlock';
+import { hasSeparateBismillah } from '../lib/bismillah';
 import { Loader2, ChevronLeft } from 'lucide-react';
 
 export default function Quran() {
@@ -33,43 +34,43 @@ export default function Quran() {
 
   if (active) {
     return (
-      <div className="space-y-4">
-        <button onClick={() => setActive(null)} className="maar-focus flex items-center gap-1 text-sm text-[var(--maar-muted)]">
+      <div className="max-w-2xl mx-auto">
+        <button onClick={() => setActive(null)} className="maar-focus flex items-center gap-1 text-sm text-[var(--maar-muted)] mb-4">
           <ChevronLeft size={16} /> {t('nav.quran')}
         </button>
-        <h2 className="text-2xl font-semibold">{active.englishName} <span className="text-[var(--maar-muted)] font-normal">— {active.englishNameTranslation}</span></h2>
-        {loading && <p className="flex items-center gap-2 text-sm text-[var(--maar-muted)]"><Loader2 className="animate-spin" size={16} /> {t('search.loading')}</p>}
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <div className="space-y-3">
-          {verses.map((v) => <VerseCard key={v.reference} passage={v} />)}
-        </div>
+        <h2 className="font-display text-3xl">{active.englishName}</h2>
+        <p className="text-[var(--maar-muted)] mt-1">{active.englishNameTranslation}</p>
+
+        {loading && <p className="flex items-center gap-2 text-sm text-[var(--maar-muted)] mt-6"><Loader2 className="animate-spin" size={16} /> {t('search.loading')}</p>}
+        {error && <p className="text-sm text-red-600 mt-6">{error}</p>}
+
+        {!loading && !error && hasSeparateBismillah(active.number) && <BismillahBlock />}
+
+        <div>{verses.map((v) => <VerseCard key={v.reference} passage={v} />)}</div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">{t('nav.quran')}</h1>
+    <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="font-display text-3xl">{t('nav.quran')}</h1>
       {loading && <p className="flex items-center gap-2 text-sm text-[var(--maar-muted)]"><Loader2 className="animate-spin" size={16} /> {t('search.loading')}</p>}
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {surahs.map((s, i) => (
-          <FadeIn key={s.number} delay={Math.min(i * 0.02, 0.4)}>
-            <button onClick={() => openSurah(s)} className="maar-card maar-focus w-full text-start p-3 hover:-translate-y-0.5 transition-transform">
-              <div className="flex items-center gap-3">
-                <span
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-medium"
-                  style={{ background: 'color-mix(in srgb, var(--maar-quran) 12%, transparent)', color: 'var(--maar-quran)' }}
-                >
-                  {s.number}
-                </span>
-                <div className="min-w-0">
-                  <p className="font-medium truncate">{s.englishName}</p>
-                  <p className="text-xs text-[var(--maar-muted)] truncate">{s.englishNameTranslation} · {s.numberOfAyahs} ayahs</p>
-                </div>
-              </div>
-            </button>
-          </FadeIn>
+      <div>
+        {surahs.map((s) => (
+          <button
+            key={s.number}
+            onClick={() => openSurah(s)}
+            className="maar-focus w-full text-start py-3.5 border-t first:border-t-0 flex items-center gap-4 hover:bg-[var(--maar-line-soft)] transition-colors -mx-2 px-2 rounded-[var(--maar-radius-sm)]"
+            style={{ borderColor: 'var(--maar-line-soft)' }}
+          >
+            <span className="w-6 shrink-0 text-right text-xs text-[var(--maar-muted)] tabular-nums">{s.number}</span>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium truncate">{s.englishName}</p>
+              <p className="text-xs text-[var(--maar-muted)] truncate">{s.englishNameTranslation}, {s.numberOfAyahs} ayahs</p>
+            </div>
+            <span dir="rtl" className="font-scripture-ar text-lg shrink-0" style={{ color: 'var(--maar-quran)' }}>{s.name}</span>
+          </button>
         ))}
       </div>
     </div>

@@ -1,33 +1,40 @@
 @import "tailwindcss";
 
+/* MAAR Read palette — warm paper / ink / gold, kept as-is per feedback.
+   The redesign below changes how these are USED (typography, spacing,
+   restrained card treatment) rather than the hex values themselves. */
 :root {
   --maar-bg: #faf9f6;
   --maar-surface: #ffffff;
   --maar-ink: #1c1a17;
   --maar-muted: #6b6459;
-  --maar-line: #e9e5dc;
+  --maar-line: #e7e2d6;
+  --maar-line-soft: #f0ece2;
   --maar-gold: #b58a3d;
+  --maar-gold-hi: #e3c07f;
   --maar-quran: #1f6f5c;
   --maar-bible: #6b4fa0;
   --maar-torah: #2a5ca8;
-  --maar-radius: 1.1rem;
+  --maar-shadow: 0 1px 2px rgba(28, 24, 18, 0.04), 0 10px 28px -16px rgba(28, 24, 18, 0.18);
+  --maar-radius-sm: 0.4rem;
+  --maar-radius: 0.65rem;
+  --maar-font-display: 'Fraunces', 'Amiri', serif;
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --maar-bg: #121110;
-  --maar-surface: #1b1917;
-  --maar-ink: #f3efe8;
-  --maar-muted: #a39c8e;
-  --maar-line: #2c2925;
+  --maar-bg: #14120f;
+  --maar-surface: #1b1814;
+  --maar-ink: #f2ede2;
+  --maar-muted: #a89e8c;
+  --maar-line: #2c2720;
+  --maar-line-soft: #221e18;
+  --maar-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -16px rgba(0, 0, 0, 0.5);
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
-
-html, body, #root {
-  height: 100%;
-}
+html, body, #root { height: 100%; }
 
 body {
   background: var(--maar-bg);
@@ -40,19 +47,30 @@ body {
   font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Inter', sans-serif;
 }
 
-.font-scripture-ar {
-  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
-}
+.font-scripture-ar { font-family: 'Amiri', 'Noto Naskh Arabic', serif; }
+.font-display { font-family: var(--maar-font-display); font-optical-sizing: auto; }
 
-.maar-card {
+/* A quiet content surface — hairline border only, no default shadow.
+   Elevation (--maar-shadow) is applied deliberately per component on
+   hover/interaction, not blanket on every box. */
+.maar-surface {
   background: var(--maar-surface);
   border: 1px solid var(--maar-line);
   border-radius: var(--maar-radius);
 }
 
 .maar-focus:focus-visible {
-  outline: 3px solid var(--maar-gold);
+  outline: 2px solid var(--maar-gold);
   outline-offset: 2px;
+}
+
+.maar-gold-shimmer {
+  color: transparent;
+  background-image: linear-gradient(100deg, var(--maar-gold), var(--maar-gold-hi), var(--maar-gold));
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: maar-shimmer 7s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -67,7 +85,7 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--maar-line); border-radius: 999px; }
 
-@keyframes maar-gradient {
+@keyframes maar-shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }

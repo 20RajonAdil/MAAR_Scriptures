@@ -2,6 +2,7 @@
 // Text + translations: api.alquran.cloud (Al Quran Cloud, free public API, no key required)
 // Audio: Al Quran Cloud CDN edition audio (per-ayah), public domain reciter recordings.
 import type { Passage, Surah } from '../types/scripture';
+import { hasSeparateBismillah, stripBismillahPrefix } from '../lib/bismillah';
 
 const BASE = 'https://api.alquran.cloud/v1';
 
@@ -21,7 +22,7 @@ export async function fetchSurah(
   if (!res.ok) throw new Error('Could not load this Surah right now.');
   const json = await res.json();
   const [arabic, translation] = json.data;
-  return arabic.ayahs.map((ayah: any, i: number) => ({
+  const ayahs = arabic.ayahs.map((ayah: any, i: number) => ({
     scripture: 'quran' as const,
     bookName: arabic.englishName,
     bookNumber: surahNumber,
@@ -35,6 +36,15 @@ export async function fetchSurah(
     reference: `Surah ${arabic.englishName} ${surahNumber}:${ayah.numberInSurah}`,
     audioUrl: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`,
   }));
+
+  // Strip the embedded Bismillah out of ayah 1's Arabic text (see
+  // src/lib/bismillah.ts) so it isn't shown twice — once as its own header
+  // in the reader, once duplicated inside the first verse.
+  if (hasSeparateBismillah(surahNumber) && ayahs.length && ayahs[0].originalText) {
+    ayahs[0] = { ...ayahs[0], originalText: stripBismillahPrefix(ayahs[0].originalText) };
+  }
+
+  return ayahs;
 }
 
 export async function searchQuran(query: string, translationEdition: string = 'en.sahih'): Promise<Passage[]> {
