@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+:root {
+  --maar-bg: #faf9f6;
+  --maar-surface: #ffffff;
+  --maar-ink: #1c1a17;
+  --maar-muted: #6b6459;
+  --maar-line: #e9e5dc;
+  --maar-gold: #b58a3d;
+  --maar-quran: #1f6f5c;
+  --maar-bible: #6b4fa0;
+  --maar-torah: #2a5ca8;
+  --maar-radius: 1.1rem;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --maar-bg: #121110;
+  --maar-surface: #1b1917;
+  --maar-ink: #f3efe8;
+  --maar-muted: #a39c8e;
+  --maar-line: #2c2925;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--maar-bg);
+  color: var(--maar-ink);
+  font-family: 'Inter', 'Noto Sans', system-ui, -apple-system, sans-serif;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+[dir="rtl"] body {
+  font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Inter', sans-serif;
+}
+
+.font-scripture-ar {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+}
+
+.maar-card {
+  background: var(--maar-surface);
+  border: 1px solid var(--maar-line);
+  border-radius: var(--maar-radius);
+}
+
+.maar-focus:focus-visible {
+  outline: 3px solid var(--maar-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--maar-line); border-radius: 999px; }
+
+@keyframes maar-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes maar-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
