@@ -9,16 +9,17 @@ import ar from './locales/ar.json';
 
 // Architecture note: add a new language by (1) creating locales/<code>.json
 // with the same keys as en.json, (2) importing + registering it below, and
-// (3) adding it to LANGUAGES. No other code changes are required. This is
-// the starting set from the spec (English, Bangla, Urdu, Arabic); French,
-// Spanish, Hindi, Turkish, Indonesian, Malay, Persian, etc. follow the same
-// pattern and are intentionally left as an exercise for translators so the
-// wording can be reviewed by a native speaker before shipping.
+// (3) adding it to LANGUAGES. No other code changes are required. MAAR Read
+// starts with the three languages the spec asks for — English, Bangla, and
+// Urdu. An Arabic translation already exists (locales/ar.json, full RTL
+// support included) and is registered with i18next but left out of the
+// switcher below until it's had a native-speaker review; flip it on by
+// adding it back to LANGUAGES. French, Spanish, Hindi, Turkish, Indonesian,
+// Malay, Persian, etc. follow the same two-step pattern.
 export const LANGUAGES = [
   { code: 'en', label: 'English', dir: 'ltr' },
   { code: 'bn', label: 'বাংলা', dir: 'ltr' },
   { code: 'ur', label: 'اردو', dir: 'rtl' },
-  { code: 'ar', label: 'العربية', dir: 'rtl' },
 ] as const;
 
 i18n

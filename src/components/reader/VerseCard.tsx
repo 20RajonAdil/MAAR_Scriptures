@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bookmark, BookmarkCheck, NotebookPen, Copy, Check, Play, Pause, Info } from 'lucide-react';
+import { Bookmark, BookmarkCheck, NotebookPen, Copy, Check, Play, Pause, Info, Save } from 'lucide-react';
 import type { Passage } from '../../types/scripture';
-import { db, newId } from '../../lib/db';
+import { toggleBookmark, isBookmarked } from '../../lib/bookmarksStore';
+import { getNote, setNote } from '../../lib/notesStore';
 
 const SCRIPTURE_COLOR: Record<string, string> = {
   quran: 'var(--maar-quran)',
@@ -12,42 +13,35 @@ const SCRIPTURE_COLOR: Record<string, string> = {
 
 export function VerseCard({ passage }: { passage: Passage }) {
   const { t } = useTranslation();
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(() => isBookmarked(passage.scripture, passage.reference));
   const [copied, setCopied] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
-  const [noteText, setNoteText] = useState('');
+  const [noteText, setNoteText] = useState(() => getNote(passage.scripture, passage.reference));
   const [playing, setPlaying] = useState(false);
   const [audio] = useState(() => (passage.audioUrl ? new Audio(passage.audioUrl) : null));
   const [showSource, setShowSource] = useState(false);
 
-  async function toggleSave() {
-    if (saved) return;
-    await db.bookmarks.add({
-      id: newId(),
+  function toggleSave() {
+    const nowSaved = toggleBookmark({
       scripture: passage.scripture,
       reference: passage.reference,
       text: passage.text,
       originalText: passage.originalText,
-      createdAt: Date.now(),
     });
-    setSaved(true);
+    setSaved(nowSaved);
   }
 
-  async function saveNote() {
-    if (!noteText.trim()) return;
-    const now = Date.now();
-    await db.notes.add({
-      id: newId(),
+  // Auto-saves on every keystroke, straight to this device's storage —
+  // same behavior as MAAR.Quran's reflection notes. No save button.
+  function onNoteInput(value: string) {
+    setNoteText(value);
+    setNote({
       scripture: passage.scripture,
       reference: passage.reference,
       text: passage.text,
       originalText: passage.originalText,
-      noteBody: noteText.trim(),
-      createdAt: now,
-      updatedAt: now,
+      noteBody: value,
     });
-    setNoteText('');
-    setNoteOpen(false);
   }
 
   function copyText() {
@@ -93,7 +87,7 @@ export function VerseCard({ passage }: { passage: Passage }) {
         <button onClick={toggleSave} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
           {saved ? <BookmarkCheck size={13} /> : <Bookmark size={13} />} {saved ? t('reader.bookmarked') : t('reader.bookmark')}
         </button>
-        <button onClick={() => setNoteOpen((v) => !v)} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
+        <button onClick={() => setNoteOpen((v) => !v)} className={`maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)] ${noteText.trim() ? 'font-medium' : ''}`}>
           <NotebookPen size={13} /> {t('reader.addNote')}
         </button>
         <button onClick={copyText} className="maar-focus flex items-center gap-1 rounded-full px-2.5 py-1 text-xs hover:bg-[var(--maar-line)]">
@@ -112,19 +106,21 @@ export function VerseCard({ passage }: { passage: Passage }) {
 
       {noteOpen && (
         <div className="mt-3 border-t pt-3" style={{ borderColor: 'var(--maar-line)' }}>
+          <label className="text-xs text-[var(--maar-muted)] mb-1 block">{t('notes.title')}</label>
           <textarea
             value={noteText}
-            onChange={(e) => setNoteText(e.target.value)}
+            onChange={(e) => onNoteInput(e.target.value)}
             placeholder={t('notes.placeholder') ?? ''}
             rows={3}
+            autoFocus
             className="maar-card maar-focus w-full rounded-lg p-2 text-sm"
           />
           <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="text-[11px] text-[var(--maar-muted)]">{t('notes.privacy')}</p>
-            <button onClick={saveNote} className="maar-focus rounded-full px-3 py-1.5 text-xs text-white shrink-0" style={{ background: 'var(--maar-ink)' }}>
-              {t('notes.save')}
-            </button>
+            <p className="flex items-center gap-1 text-[11px] text-[var(--maar-muted)]">
+              <Save size={11} /> {noteText.trim() ? t('notes.saved') : t('notes.emptyHint')}
+            </p>
           </div>
+          <p className="mt-1 text-[11px] text-[var(--maar-muted)]">{t('notes.privacy')}</p>
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 {
-  "name": "MAAR Scriptures",
+  "name": "MAAR Read",
   "short_name": "MAAR",
-  "description": "Different scriptures. Honest learning. Read and compare the Qur'an, Bible, and Torah.",
+  "description": "Read the Qur'an, Bible, and Torah side by side, in one simple, honest place.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

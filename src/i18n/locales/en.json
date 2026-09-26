@@ -1,5 +1,5 @@
 {
-  "app.name": "MAAR Scriptures",
+  "app.name": "MAAR Read",
   "app.tagline": "Different scriptures. Honest learning.",
   "nav.home": "Home",
   "nav.quran": "Qur'an",
@@ -76,5 +76,7 @@
   "about.body": "MAAR helps people read and learn about the Qur'an, Bible, and Torah in one place. We show the sources clearly and help people compare topics. MAAR does not create a new religion and does not ask anyone to change their faith. Our goal is simple: honest learning, clear information, and respectful understanding.",
   "offline.banner": "You are offline. Showing what's already saved on this device.",
   "error.generic": "Something went wrong. Please try again.",
-  "error.retry": "Retry"
+  "error.retry": "Retry",
+  "notes.saved": "Saved to your device",
+  "notes.emptyHint": "Nothing written yet — start typing"
 }

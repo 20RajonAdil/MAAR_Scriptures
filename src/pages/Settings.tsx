@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES } from '../i18n';
 import { useTheme } from '../hooks/useTheme';
-import { db } from '../lib/db';
+import { localStore } from '../lib/localStore';
 import { useState } from 'react';
 
 export default function Settings() {
@@ -17,8 +17,7 @@ export default function Settings() {
   }
 
   async function clearData() {
-    await db.notes.clear();
-    await db.bookmarks.clear();
+    localStore.clear(['notes', 'bookmarks']);
     setConfirming(false);
   }
 
