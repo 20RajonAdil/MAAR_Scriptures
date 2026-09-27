@@ -8,7 +8,7 @@ import { hasSeparateBismillah } from '../lib/bismillah';
 import { Loader2, ChevronLeft } from 'lucide-react';
 
 export default function Quran() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [active, setActive] = useState<Surah | null>(null);
   const [verses, setVerses] = useState<Passage[]>([]);
@@ -19,12 +19,25 @@ export default function Quran() {
     fetchSurahList().then(setSurahs).catch(() => setError(t('error.generic'))).finally(() => setLoading(false));
   }, [t]);
 
+  // Re-fetch the open Surah's translation when the interface language
+  // changes, so switching to Bangla/Urdu updates the verse text too, not
+  // just the surrounding UI chrome.
+  useEffect(() => {
+    if (!active) return;
+    setLoading(true);
+    fetchSurah(active.number, i18n.language)
+      .then(setVerses)
+      .catch(() => setError(t('error.generic')))
+      .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
+
   async function openSurah(s: Surah) {
     setActive(s);
     setLoading(true);
     setError(null);
     try {
-      setVerses(await fetchSurah(s.number));
+      setVerses(await fetchSurah(s.number, i18n.language));
     } catch {
       setError(t('error.generic'));
     } finally {

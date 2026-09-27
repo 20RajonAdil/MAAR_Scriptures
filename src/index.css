@@ -13,7 +13,7 @@
   --maar-gold: #b58a3d;
   --maar-gold-hi: #e3c07f;
   --maar-quran: #1f6f5c;
-  --maar-bible: #6b4fa0;
+  --maar-bible: #8c4a3a;
   --maar-torah: #2a5ca8;
   --maar-shadow: 0 1px 2px rgba(28, 24, 18, 0.04), 0 10px 28px -16px rgba(28, 24, 18, 0.18);
   --maar-radius-sm: 0.4rem;
@@ -63,6 +63,19 @@ body {
   outline: 2px solid var(--maar-gold);
   outline-offset: 2px;
 }
+
+/* Primary filled buttons/chips use gold with a fixed dark foreground —
+   NOT --maar-ink, which intentionally flips between themes (dark in light
+   mode, light in dark mode) since it's used as body text color. Building a
+   "filled dark button" out of --maar-ink broke in dark mode: the fill
+   turned light and the white button text became unreadable on it. Gold
+   stays the same color in both themes, so this is safe everywhere. */
+.maar-btn-primary {
+  background: var(--maar-gold);
+  color: #211705;
+  border: 1px solid var(--maar-gold);
+}
+.maar-btn-primary:hover { background: var(--maar-gold-hi); border-color: var(--maar-gold-hi); }
 
 .maar-gold-shimmer {
   color: transparent;

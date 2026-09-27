@@ -32,8 +32,8 @@ export default function Settings() {
             <button
               key={l.code}
               onClick={() => i18n.changeLanguage(l.code)}
-              className={`maar-focus rounded-full px-4 py-1.5 text-sm border ${i18n.language === l.code ? 'text-white' : ''}`}
-              style={i18n.language === l.code ? { background: 'var(--maar-ink)', borderColor: 'var(--maar-ink)' } : { borderColor: 'var(--maar-line)' }}
+              className={`maar-focus rounded-full px-4 py-1.5 text-sm border ${i18n.language === l.code ? 'maar-btn-primary font-medium' : ''}`}
+              style={i18n.language !== l.code ? { borderColor: 'var(--maar-line)' } : undefined}
             >
               {l.label}
             </button>
@@ -48,8 +48,8 @@ export default function Settings() {
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`maar-focus rounded-full px-4 py-1.5 text-sm border ${mode === m ? 'text-white' : ''}`}
-              style={mode === m ? { background: 'var(--maar-ink)', borderColor: 'var(--maar-ink)' } : { borderColor: 'var(--maar-line)' }}
+              className={`maar-focus rounded-full px-4 py-1.5 text-sm border ${mode === m ? 'maar-btn-primary font-medium' : ''}`}
+              style={mode !== m ? { borderColor: 'var(--maar-line)' } : undefined}
             >
               {t(`settings.theme.${m}`)}
             </button>

@@ -11,8 +11,8 @@ export type TermCategory = 'deity' | 'prophet' | 'figure' | 'term';
 export interface TermEntry {
   id: string;
   label: string; // shown in the UI, e.g. "Jesus / Isa"
-  names: string[]; // lowercase match list
-  quranQuery?: string;
+  names: string[]; // lowercase match list, also used as Quran search candidates
+  quranQuery?: string; // tried first for Quran search, before falling back to `names`
   bibleQuery?: string;
   torahQuery?: string;
   category: TermCategory;

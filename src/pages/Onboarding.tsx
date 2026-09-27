@@ -42,8 +42,7 @@ export default function Onboarding() {
         <button onClick={finish} className="maar-focus text-sm text-[var(--maar-muted)]">{t('onboarding.skip')}</button>
         <button
           onClick={() => (step < slides.length - 1 ? setStep((s) => s + 1) : finish())}
-          className="maar-focus rounded-full px-5 py-2 text-sm text-white"
-          style={{ background: 'var(--maar-ink)' }}
+          className="maar-focus maar-btn-primary rounded-full px-5 py-2 text-sm font-medium"
         >
           {step < slides.length - 1 ? t('onboarding.next') : t('onboarding.start')}
         </button>

@@ -20,13 +20,7 @@ export function TopNav() {
     <header className="sticky top-0 z-40 border-b" style={{ borderColor: 'var(--maar-line)', background: 'color-mix(in srgb, var(--maar-bg) 88%, transparent)', backdropFilter: 'blur(10px)' }}>
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
         <NavLink to="/" className="flex items-center gap-2.5 shrink-0 maar-focus rounded-md">
-          <span
-            aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-full border font-scripture-ar text-sm"
-            style={{ borderColor: 'var(--maar-gold)', color: 'var(--maar-gold)' }}
-          >
-            م
-          </span>
+          <img src="/logo-mark.svg" alt="" aria-hidden="true" className="h-8 w-8" />
           <span className="font-display text-lg">{t('app.name')}</span>
         </NavLink>
 

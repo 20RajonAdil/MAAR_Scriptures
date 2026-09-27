@@ -6,7 +6,7 @@ import { BookOpen, Search, Scale, NotebookPen } from 'lucide-react';
 
 const scriptures = [
   { to: '/quran', key: 'nav.quran', color: 'var(--maar-quran)', accent: '31,111,92' },
-  { to: '/bible', key: 'nav.bible', color: 'var(--maar-bible)', accent: '107,79,160' },
+  { to: '/bible', key: 'nav.bible', color: 'var(--maar-bible)', accent: '140,74,58' },
   { to: '/torah', key: 'nav.torah', color: 'var(--maar-torah)', accent: '42,92,168' },
 ];
 
@@ -26,7 +26,7 @@ export default function Home() {
         <h1 className="font-display text-4xl sm:text-5xl leading-tight">{t('app.tagline')}</h1>
         <p className="mt-4 text-[var(--maar-muted)] text-base sm:text-lg leading-relaxed">{t('home.intro')}</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <Link to="/quran" className="maar-focus rounded-full px-5 py-2.5 text-sm font-medium text-white" style={{ background: 'var(--maar-ink)' }}>
+          <Link to="/quran" className="maar-focus maar-btn-primary rounded-full px-5 py-2.5 text-sm font-medium">
             {t('home.cta.read')}
           </Link>
           <Link to="/search" className="maar-focus rounded-full px-5 py-2.5 text-sm font-medium border" style={{ borderColor: 'var(--maar-line)' }}>

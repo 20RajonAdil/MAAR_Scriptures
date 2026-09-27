@@ -36,16 +36,23 @@ async function torahTopicSearch(query: string): Promise<Passage[]> {
 export async function searchAllScriptures(query: string): Promise<SearchResultGroup[]> {
   // If the query matches a known cross-tradition name or term (e.g. "God"
   // matches "Allah", "Jesus" matches "Isa"), search each scripture using
-  // the term it actually uses, instead of the literal typed word — a
-  // literal search for "God" in the Qur'an API would miss every ayah that
-  // says "Allah", even though they're asking about the same thing.
+  // the term(s) it actually uses, instead of only the literal typed word.
   const match = findTermMatch(query);
-  const quranQuery = match?.quranQuery ?? query;
   const bibleQuery = match?.bibleQuery ?? query;
   const torahQuery = match?.torahQuery ?? query;
 
+  // Quran full-text search matches the TRANSLATION's wording, which for
+  // most English editions (Sahih International included) uses the common
+  // English name — "Moses", not "Musa" — even though the transliteration
+  // is what Muslims commonly call him. Try every plausible spelling in
+  // turn (the entry's own quranQuery, all its known names, then the raw
+  // query) so the search isn't blind to whichever one the edition uses.
+  const quranCandidates = Array.from(
+    new Set([match?.quranQuery, ...(match?.names ?? []), query].filter((v): v is string => !!v && v.trim().length > 0))
+  );
+
   const [quran, bible, torah] = await Promise.allSettled([
-    searchQuran(quranQuery),
+    searchQuran(quranCandidates),
     bibleTopicSearch(bibleQuery),
     torahTopicSearch(torahQuery),
   ]);

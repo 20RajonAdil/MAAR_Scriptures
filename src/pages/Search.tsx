@@ -56,7 +56,7 @@ export default function Search() {
             className="maar-focus flex-1 bg-transparent py-2.5 text-sm outline-none"
           />
         </div>
-        <button type="submit" className="maar-focus rounded-full px-4 py-2.5 text-sm text-white" style={{ background: 'var(--maar-ink)' }}>
+        <button type="submit" className="maar-focus maar-btn-primary rounded-full px-4 py-2.5 text-sm font-medium">
           {t('search.button')}
         </button>
 
